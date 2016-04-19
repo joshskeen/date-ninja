@@ -1,0 +1,27 @@
+{
+  "name": "date-ninja",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdrianBinDC/date-ninja.git"
+  },
+  "author": "Adrian Bolinger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdrianBinDC/date-ninja/issues"
+  },
+  "homepage": "https://github.com/AdrianBinDC/date-ninja",
+  "dependencies": {
+    "alexa-app": "^2.3.2",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "lodash": "^4.11.1",
+    "mocha": "^2.4.5",
+    "request-promise": "^3.0.0"
+  }
+}
