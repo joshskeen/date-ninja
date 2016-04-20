@@ -4,19 +4,42 @@ var rp = require('request-promise');
 let moment = require('moment');
 // moment().format(); // not sure if this is needed
 
+// Date constants
+// Might use to handle returns further down the line
+var minutes = 1000 * 60;
+var hours 	= minutes * 60;
+var days 	= hours * 24;
+var weeks 	= days * 7;
+
 function DateHelper() {
 
-	// TODO: need to add a units parameter to the function
-	DateHelper.prototype.getDaysFromDate = function(futureDate) {
+	DateHelper.prototype.getDaysFromNow = function(futureDate) {
 
 		var currentDate = moment().format("YYYY MM DD");
-		var daysFromDate = futureDate.diff(currentDate, 'days');
-		console.log('daysFromDate = ' + daysFromDate);
-		// return values
+		var daysFromNow = futureDate.diff(currentDate, 'days');
+		console.log('daysFromNow = ' + daysFromNow);
+		// TODO: handle return values w/ logic in response handler
 		// positive number = days until
 		// negative number = days since
-		return daysFromDate;
+		// FIXME absolute value doesn't work = days between two dates
+		return daysFromNow;
 	};
+
+	DateHelper.prototype.getDaysBetweenDates = function(date1, date2) {
+
+		var date1 = moment().format("YYYY MM DD");
+		var date2 = moment().format("YYYY MM DD");
+		var daysBetweenDates = date1.diff(date2, 'days');
+		console.log('daysBetweenDates = ' + daysBetweenDates);
+		// TODO: handle return values w/ logic in response handler
+		// positive number = days until
+		// negative number = days since
+		// FIXME absolute value doesn't work = days between two dates
+		return Math.abs(daysBetweenDates); // Returns an absolute number
+	};
+
+
+
 }
 
 module.exports = DateHelper;
