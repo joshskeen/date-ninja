@@ -31,21 +31,47 @@ function DateHelper() {
 		return Math.abs(daysBetweenDates); // Returns an absolute number
 	};
 
-	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
-		inputDate = new Date();
-		var dayOfTheWeek = inputDate.getDay();
+	// DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
 
-		switch(dayOfTheWeek) {
-			case 0: return "Sunday";
-			case 1: return "Monday";
-			case 2: return "Tuesday";
-			case 3: return "Wednesday";
-			case 4: return "Thursday";
-			case 5: return "Friday";
-			case 6: return "Saturday";
-			default: return;
+	// 	inputDate = new Date();
+	// 	var dayOfTheWeek = inputDate.getDay();
+
+	// 	switch(dayOfTheWeek) {
+	// 		case 0: return "Sunday";
+	// 		case 1: return "Monday";
+	// 		case 2: return "Tuesday";
+	// 		case 3: return "Wednesday";
+	// 		case 4: return "Thursday";
+	// 		case 5: return "Friday";
+	// 		case 6: return "Saturday";
+	// 		default: return;
+	// 	}
+	// };
+
+	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
+
+		if (inputDate instanceof Date) {
+			inputDate = new Date();
+			var dayOfTheWeek = inputDate.getDay();
+
+			switch(dayOfTheWeek) {
+				case 0: return "Sunday";
+				case 1: return "Monday";
+				case 2: return "Tuesday";
+				case 3: return "Wednesday";
+				case 4: return "Thursday";
+				case 5: return "Friday";
+				case 6: return "Saturday";
+				default: return;
+			}
+		} else {
+			// I'm shooting for doing nothing if the input isn't a Date()
+			// How would I test this?
+			return;
 		}
+
 	};
+
 }
 
 module.exports = DateHelper;
