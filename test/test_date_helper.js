@@ -18,9 +18,9 @@ describe('DateHelper', function() {
 	var date2;		// for testing daysBetweenDates
 
 	context('With a valid date in moment format, getDaysFromNow', function() {
-		it('should return 2', function() {
+		it('should return 1', function() {
 			futureDate = moment('2016 04 21', 'YYYY MM DD'); // I want to test for tomorrow
-			expect(subject.getDaysFromNow(futureDate)).to.eq(2);
+			expect(subject.getDaysFromNow(futureDate)).to.eq(1);
 		});
 	});
 
@@ -32,9 +32,9 @@ describe('DateHelper', function() {
 	});
 
 	context('With a valid date in moment format in the past, getDaysFromNow', function() {
-		it('should return -18', function() {
+		it('should return -19', function() {
 			pastDate = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
-			expect(subject.getDaysFromNow(pastDate)).to.eq(-18);
+			expect(subject.getDaysFromNow(pastDate)).to.eq(-19);
 		});
 	});
 
@@ -57,7 +57,7 @@ describe('DateHelper', function() {
 
 	context('With a valid date value, getDayOfTheWeekFromDate', function() {
 		it('should return Tuesday', function() {
-			expect(subject.getDayOfTheWeekFromDate(new Date())).to.eq('Tuesday');
+			expect(subject.getDayOfTheWeekFromDate(new Date())).to.eq('Wednesday');
 		});
 	});
 
@@ -66,6 +66,31 @@ describe('DateHelper', function() {
 			expect(subject.getDayOfTheWeekFromDate('bogusArgument')).to.be.invalid;
 		});
 	});
+
+	context('With a valid number, getDaysInTheFuture', function() {
+		it('should return a string', function() {
+			expect(subject.getDaysInTheFuture(7)).to.be.valid;
+		});
+	});
+
+	context('With an invalid argument, getDaysInTheFuture', function() {
+		it('should return nothing', function() {
+			expect(subject.getDaysInTheFuture('bogusArgument')).to.be.invalid;
+		});
+	});
+
+	context('With a valid number, getDaysInThePast', function() {
+		it('should return a string', function() {
+			expect(subject.getDaysInThePast(7)).to.be.valid;
+		});
+	});
+
+	context('With an invalid argument, getDaysInThePast', function() {
+		it('should return nothing', function() {
+			expect(subject.getDaysInThePast('bogusArgument')).to.be.invalid;
+		});
+	});
+
 
 });
 

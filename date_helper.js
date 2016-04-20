@@ -31,23 +31,6 @@ function DateHelper() {
 		return Math.abs(daysBetweenDates); // Returns an absolute number
 	};
 
-	// DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
-
-	// 	inputDate = new Date();
-	// 	var dayOfTheWeek = inputDate.getDay();
-
-	// 	switch(dayOfTheWeek) {
-	// 		case 0: return "Sunday";
-	// 		case 1: return "Monday";
-	// 		case 2: return "Tuesday";
-	// 		case 3: return "Wednesday";
-	// 		case 4: return "Thursday";
-	// 		case 5: return "Friday";
-	// 		case 6: return "Saturday";
-	// 		default: return;
-	// 	}
-	// };
-
 	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
 
 		if (inputDate instanceof Date) {
@@ -71,6 +54,25 @@ function DateHelper() {
 		}
 
 	};
+
+	// TODO: add test
+	DateHelper.prototype.getDaysInTheFuture = function(daysInTheFuture) {
+		if (typeof Number(daysInTheFuture)) {
+			return moment().add(daysInTheFuture, 'days').calendar();
+		}
+		return;
+	};
+	
+	// TODO: add test
+	DateHelper.prototype.getDaysInThePast = function(daysInThePast) {
+		if (typeof Number(daysInThePast)) {
+			return moment().subtract(daysInThePast, 'days').calendar();
+		}
+		return;
+	};
+
+
+
 
 }
 
