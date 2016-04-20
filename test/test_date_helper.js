@@ -46,14 +46,11 @@ describe('DateHelper', function() {
 		});
 	});
 
-	// FIXME: need to create a separate method that returns the absolute value
-	// context('With a valid date, getDaysFromDate', function() {
-	// 	it('should return absolute value of 18', function() {
-	// 		pastDate = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
-	// 		expect(subject.getDaysFromDate(pastDate)).to.eq(Math.abs(18));
-	// 	});
-	// });
-
+	context('With a valid date value, getDayOfTheWeekFromDate', function() {
+		it('should return Tuesday', function() {
+			expect(subject.getDayOfTheWeekFromDate(new Date())).to.eq('Tuesday');
+		});
+	});
 });
 
 

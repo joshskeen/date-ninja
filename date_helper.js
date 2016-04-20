@@ -21,7 +21,6 @@ function DateHelper() {
 		// TODO: handle return values w/ logic in response handler
 		// positive number = days until
 		// negative number = days since
-		// FIXME absolute value doesn't work = days between two dates
 		return daysFromNow;
 	};
 
@@ -29,15 +28,24 @@ function DateHelper() {
 
 		var daysBetweenDates = date1.diff(date2, 'days');
 		console.log('daysBetweenDates = ' + Math.abs(daysBetweenDates));
-		// TODO: handle return values w/ logic in response handler
-		// positive number = days until
-		// negative number = days since
-		// FIXME absolute value doesn't work = days between two dates
 		return Math.abs(daysBetweenDates); // Returns an absolute number
 	};
 
+	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
+		inputDate = new Date();
+		var dayOfTheWeek = inputDate.getDay();
 
-
+		switch(dayOfTheWeek) {
+			case 0: return "Sunday";
+			case 1: return "Monday";
+			case 2: return "Tuesday";
+			case 3: return "Wednesday";
+			case 4: return "Thursday";
+			case 5: return "Friday";
+			case 6: return "Saturday";
+			default: return;
+		}
+	};
 }
 
 module.exports = DateHelper;
