@@ -13,16 +13,31 @@ var weeks 	= days * 7;
 
 function DateHelper() {
 
-	DateHelper.prototype.getDaysFromNow = function(futureDate) {
+	/*
+	Sample utterances:
+	'How many days until <inputDate>?' (returns positive number)
+	'How many days from now is <inputDate>?' (returns positive number)
+	'How many days have passed since <inputDate>?' (returns negative number)
+	'How many days since <inputDate>?' (returns negative number)
+	'How many days ago was <inputDate>?' (returns negative number)
+	*/
+
+	DateHelper.prototype.getDaysFromNow = function(inputDate) {
 
 		var currentDate = moment().format("YYYY MM DD");
-		var daysFromNow = futureDate.diff(currentDate, 'days');
+		var daysFromNow = inputDate.diff(currentDate, 'days');
 		console.log('daysFromNow = ' + daysFromNow);
 		// TODO: handle return values w/ logic in response handler
 		// positive number = days until
 		// negative number = days since
 		return daysFromNow;
 	};
+
+	/*
+	'How many days are between <date1> and <date2>?'
+	'What is the difference in days between <date1> and <date2>?'
+	'What's the difference in days between <date1> and <date2>?'
+	*/
 
 	DateHelper.prototype.getDaysBetweenDates = function(date1, date2) {
 
@@ -31,6 +46,13 @@ function DateHelper() {
 		return Math.abs(daysBetweenDates); // Returns an absolute number
 	};
 
+
+	/*
+	Sample utterances for this function:
+	'What day of the week was <inputDate>?'
+	'What day of the week is <inputDate>?'
+	'What day of the week will <inputDate> be?'
+	*/
 	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
 
 		if (inputDate instanceof Date) {
@@ -55,21 +77,62 @@ function DateHelper() {
 
 	};
 
-	// TODO: add test
+	/*
+	Sample utterances:
+	'What is the date <daysInTheFuture> days from now?'
+	'What's <daysInTheFuture> days from now?'
+	*/
+
 	DateHelper.prototype.getDaysInTheFuture = function(daysInTheFuture) {
 		if (typeof Number(daysInTheFuture)) {
+			console.log('getDaysInTheFuture ' + moment().add(daysInTheFuture, 'days').calendar());
 			return moment().add(daysInTheFuture, 'days').calendar();
 		}
 		return;
 	};
-	
-	// TODO: add test
+
+	/*
+	Sample utterances:
+	What was the date <daysInThePast> days ago?
+	*/
+
 	DateHelper.prototype.getDaysInThePast = function(daysInThePast) {
 		if (typeof Number(daysInThePast)) {
+			console.log('getDaysInThePast ' + moment().subtract(daysInThePast, 'days').calendar());
 			return moment().subtract(daysInThePast, 'days').calendar();
 		}
 		return;
 	};
+
+	/*
+	Sample utterances:
+	What is the date <monthsInTheFuture> from now?
+	What is the date <monthsInTheFuture> from today?
+	What is the date <monthsInTheFuture>?
+	*/
+	DateHelper.prototype.getMonthsInTheFuture = function(monthsInTheFuture) {
+		if (typeof Number(monthsInTheFuture)) {
+			console.log('getMonthsInTheFuture ' + moment().add(monthsInTheFuture, 'months').calendar());
+			return moment().add(monthsInTheFuture, 'months').calendar();
+		} else {
+			return undefined;			
+		}
+	};
+
+/*
+	Sample utterances:
+	What was the date <monthsInThePast> months from today?
+	What was the date <monthsInThePast> months from now?
+	What was the date <monthsInThePast> months ago? 
+*/
+	DateHelper.prototype.getMonthsInThePast = function(monthsInThePast) {
+		if (typeof Number(monthsInThePast)) {
+			console.log('getMonthsInThePast ' + moment().subtract(monthsInThePast, 'months').calendar());
+			return moment().subtract(monthsInThePast, 'months').calendar();
+		}
+		return;
+	};
+
 
 
 

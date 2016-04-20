@@ -91,7 +91,17 @@ describe('DateHelper', function() {
 		});
 	});
 
+	context('With a valid argument, getMonthsInTheFuture', function() {
+		it('should return a string', function() {
+			expect(subject.getMonthsInTheFuture(7)).to.be.valid;
+		});
+	});
 
+	context('With an invalid argument, getMonthsInTheFuture', function() {
+		it('should return nothing', function() {
+			expect(subject.getMonthsInTheFuture('string')).to.be.invalid;
+		})
+	})
 });
 
 
