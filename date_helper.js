@@ -12,7 +12,7 @@ All dates from Amazon Alexa get passed in as strings in format YYYY-MM-DD
 */
 
 // Date constants
-// Might use to handle returns further down the line
+// Might use to handle returns further down the line, commenting out for now
 // var minutes = 1000 * 60;
 // var hours 	= minutes * 60;
 // var days 	= hours * 24;
@@ -163,6 +163,12 @@ function DateHelper() {
 		}
 	};
 
+	/*
+	Sample utterances:
+	What was the date <weeksInThePast> weeks ago?
+	What was the date <weeksInThePast> weeks in the past?
+	*/
+
 	// Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getweeksInThePast = function(weeksInThePast) {
 		if (isNaN(weeksInThePast)) {
@@ -191,12 +197,10 @@ function DateHelper() {
 	};
 	
 	// 	Sample utterances:
-	// 	What was the date <monthsInThePast> months from today?
-	// 	What was the date <monthsInThePast> months from now?
-	// 	What was the date <monthsInThePast> months ago? 
-	
+	// 	What was the date <monthsInThePast> months ago?
+	// 	What was the date <monthsInThePast> months ago today?	
 
-	// // Takes AMAZON.NUMBER as its argument
+	// Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getMonthsInThePast = function(monthsInThePast) {
 		if (typeof Number(monthsInThePast)) {
 			console.log('getMonthsInThePast ' + moment().subtract(monthsInThePast, 'months').calendar());
