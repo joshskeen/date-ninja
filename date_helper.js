@@ -27,10 +27,8 @@ function DateHelper() {
 
 	DateHelper.prototype.getDaysBetweenDates = function(date1, date2) {
 
-		var date1 = moment().format("YYYY MM DD");
-		var date2 = moment().format("YYYY MM DD");
 		var daysBetweenDates = date1.diff(date2, 'days');
-		console.log('daysBetweenDates = ' + daysBetweenDates);
+		console.log('daysBetweenDates = ' + Math.abs(daysBetweenDates));
 		// TODO: handle return values w/ logic in response handler
 		// positive number = days until
 		// negative number = days since

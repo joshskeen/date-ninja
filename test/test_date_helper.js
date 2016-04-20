@@ -14,6 +14,8 @@ describe('DateHelper', function() {
 	var subject = new DateHelper();
 	var futureDate; // for testing with getDaysFromNow function
 	var pastDate; 	// for testing with getDaysFromNow function
+	var date1;		// for testing daysBetweenDates
+	var date2;		// for testing daysBetweenDates
 
 	context('With a valid date, getDaysFromNow', function() {
 		it('should return 2', function() {
@@ -33,6 +35,14 @@ describe('DateHelper', function() {
 		it('should return -18', function() {
 			pastDate = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
 			expect(subject.getDaysFromNow(pastDate)).to.eq(-18);
+		});
+	});
+
+	context('With two valid dates, daysBetweenDates', function() {
+		it('should return 29', function() {
+			date1 = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
+			date2 = moment('2016 04 30', 'YYYY MM DD'); // I want to test for tomorrow
+			expect(subject.getDaysBetweenDates(date1, date2)).to.eq(29);
 		});
 	});
 
