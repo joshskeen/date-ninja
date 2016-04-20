@@ -3,19 +3,43 @@ var chai = require('chai');
 var expect = chai.expect;
 var DateHelper = require('../date_helper');
 chai.config.includeStack = true; // true enables stack trace
+var moment = require('moment');
+moment().format('YYYY MM DD');
 
 describe('DateHelper', function() {
-  var subject = new DateHelper();
-  var futureDate;
-  describe('#daysUntil', function() {
-  	context('with a valid date', function() {
-  		it('returns the correct date in the future', function() {
-  			futureDate = new Date('April 21, 2016'); // I want to test for tomorrow
-  			var value = subject.daysUntil(futureDate).then(function(obj) {
-  				return obj;
-  			});
-  			return expect(value).to.eq(1);
-  		});
-  	});
-  });
+
+	// getDaysUntil method
+	var subject = new DateHelper();
+	var futureDate;
+	context('With a valid date', function() {
+		it('Should return 2', function() {
+			futureDate = moment('2016 04 21', 'YYYY MM DD'); // I want to test for tomorrow
+			expect(subject.getDaysUntil(futureDate)).to.eq(2);
+		});
+	});
+
+	context('With an invalid date', function() {
+		it('Should return an error', function() {
+			futureDate = moment('90322 999 323', 'YYYY MM DD'); // I want to test for a silly value
+			expect(subject.getDaysUntil(futureDate)).to.be.NaN;
+		});
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

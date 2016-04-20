@@ -1,26 +1,42 @@
 'use strict';
 var _ = require('lodash');
 var rp = require('request-promise');
+let moment = require('moment');
+// moment().format(); // not sure if this is needed
 
-// constants
-var minutes = 1000*60;
-var hours = minutes*60;
-var days = hours*24;
+// STOCK TUTORIAL CODE
+// function DateHelper() {
 
+// 	DateHelper.prototype.requestDaysUntil = function(futureDate) {
+// 		return this.getDaysUntil(futureDate).then(
+// 			function(response) {
+// 				console.log('success - daysUntil futureDate is ' + response);
+// 				return response.body;
+// 			}
+// 		);
+// 	};
+
+// 	// TODO: need to add a units parameter to the function
+// 	DateHelper.prototype.getDaysUntil = function(futureDate) {
+
+// 		var currentDate = moment().format("YYYY MM DD");
+// 		var daysUntil = futureDate.diff(currentDate, 'days');
+// 		console.log('daysUntil = ' + daysUntil);
+// 		return daysUntil;
+// 	};
+// }
 
 function DateHelper() {
 
 	// TODO: need to add a units parameter to the function
-	DateHelper.prototype.daysUntil = function(futureDate) {
-		// fill in
+	DateHelper.prototype.getDaysUntil = function(futureDate) {
 
-		var now = new Date();
-		// TODO: need a switch here
-		var dateDifference = Math.round((futureDate - now)/days);
-		console.log('dateDifference = ' + dateDifference);
-		return dateDifference
-	}
-
+		var currentDate = moment().format("YYYY MM DD");
+		var daysUntil = futureDate.diff(currentDate, 'days');
+		console.log('daysUntil = ' + daysUntil);
+		return daysUntil;
+	};
 }
+
 
 module.exports = DateHelper;
