@@ -4,7 +4,7 @@ var expect = chai.expect;
 var DateHelper = require('../date_helper');
 chai.config.includeStack = true; // true enables stack trace
 var moment = require('moment');
-moment().format('YYYY MM DD');
+// moment().format('YYYY MM DD');
 
 // Constants to handle date calculations
 
@@ -43,77 +43,108 @@ describe('DateHelper', function() {
 		});
 	});
 
+	// PASSED!
 	context('With two valid dates in moment format, daysBetweenDates', function() {
 		it('should return 29', function() {
-			date1 = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
-			date2 = moment('2016 04 30', 'YYYY MM DD'); // I want to test for tomorrow
+			date1 = '2016-04-01'; // I want to test for tomorrow
+			date2 = '2016-04-30'; // I want to test for tomorrow
 			expect(subject.getDaysBetweenDates(date1, date2)).to.eq(29);
 		});
 	});
 
-// // // TODO: 1 invalid, 1 valid 
-// // 	context('With 1 valid, 1 invalid, daysBetweenDates', function() {
-// // 		it('should return NaN', function() {
-// // 			date1 = moment('2016 04 01', 'YYYY MM DD'); // I want to test for tomorrow
-// // 			date2 = moment('2016 04 30', 'YYYY MM DD'); // I want to test for tomorrow
-// // 			expect(subject.getDaysBetweenDates(date1, date2)).to.eq(29);
-// // 		});
-// // 	});
+	// PASSED!
+	context('With 1 valid, 1 invalid, daysBetweenDates', function() {
+		it('should return an error', function() {
+			date1 = '2016-04-01'; // valid string
+			date2 = 'PT5H10M'; // Invalid string
+			expect(subject.getDaysBetweenDates.bind(date1, date2)).to.throw('getDaysBetweenDates(): both arguments must be valid AMAZON.DATE strings');
+		});
+	});
 
-// 	context('With a valid date value, getDayOfTheWeekFromDate', function() {
-// 		it('should return Tuesday', function() {
-// 			expect(subject.getDayOfTheWeekFromDate(new Date())).to.eq('Wednesday');
-// 		});
-// 	});
+	// PASSED!
+	context('With a valid date value, getDayOfTheWeekFromDate', function() {
+		it('should return Tuesday', function() {
+			expect(subject.getDayOfTheWeekFromDate("2016-04-19")).to.eq('Tuesday');
+		});
+	});
 
-// // TODO: refactor error handling
-// 	context('With a invalid date value, getDayOfTheWeekFromDate', function() {
-// 		it('should return nothing', function() {
-// 			expect(subject.getDayOfTheWeekFromDate('bogusArgument')).to.be.invalid;
-// 		});
-// 	});
+	// PASSED!
+	context('With a invalid date value, getDayOfTheWeekFromDate', function() {
+		it('should return an error', function() {
+			expect(subject.getDayOfTheWeekFromDate.bind('bogusArgument')).to.throw('getDayOfTheWeekFromDate(): argument was not a valid AMAZON.DATE string');
+		});
+	});
 
-// 	context('With a valid number, getDaysInTheFuture', function() {
-// 		it('should return a string', function() {
-// 			expect(subject.getDaysInTheFuture(7)).to.be.valid;
-// 		});
-// 	});
+	// PASSED!
+	context('With a valid number, getDaysInTheFuture', function() {
+		it('should return a string', function() {
+			expect(subject.getDaysInTheFuture(7)).to.be.valid;
+		});
+	});
 
-// // DONE: error handling works for getDaysInTheFuture()
-// 	context('With an invalid argument, getDaysInTheFuture', function() {
-// 		it('should throw an error', function() {
-// 			expect(subject.getDaysInTheFuture.bind('bogusArgument')).to.throw('getDaysInTheFuture(): argument must be a number');
-// 		});
-// 	});
+	// PASSED!
+	context('With a NaN argument, getDaysInTheFuture', function() {
+		it('should throw an error', function() {
+			expect(subject.getDaysInTheFuture.bind('bogusArgument')).to.throw('getDaysInTheFuture(): argument must be a number');
+		});
+	});
 
-// 	context('With a valid number, getDaysInThePast', function() {
-// 		it('should return a string', function() {
-// 			expect(subject.getDaysInThePast(7)).to.be.valid;
-// 		});
-// 	});
+	// PASSED!
+	context('With a valid number, getDaysInThePast', function() {
+		it('should return a string', function() {
+			expect(subject.getDaysInThePast(7)).to.be.valid;
+		});
+	});
 
-// // DONE: error handling works for getDaysInThePast()
-// 	context('with an invalid argument, getDaysInThePast', function() {
-// 		it('should throw an error', function() {
-// 			expect(subject.getDaysInThePast.bind('bogusArgument')).to.throw('getDaysInThePast(): argument must be a number');
-// 		});
-// 	});
+	// PASSED!
+	context('with a NaN argument, getDaysInThePast', function() {
+		it('should throw an error', function() {
+			expect(subject.getDaysInThePast.bind('bogusArgument')).to.throw('getDaysInThePast(): argument must be a number');
+		});
+	});
 
-// 	context('With a valid argument, getMonthsInTheFuture', function() {
-// 		it('should return a string', function() {
-// 			expect(subject.getMonthsInTheFuture(7)).to.be.valid;
-// 		});
-// 	});
+	// PASSED
+	context('with a valid number, weeksInTheFuture', function() {
+		it('should return a string', function() {
+			expect(subject.getWeeksInTheFuture(7)).to.be.valid;
+		});
+	});
 
-// // TODO: refactor error handling
-// 	context('With an invalid argument, getMonthsInTheFuture', function() {
-// 		it('should return nothing', function() {
-// 			expect(subject.getMonthsInTheFuture('string')).to.be.invalid;
-// 		})
-// 	})
-// });
+	// PASSED
+	context('with an invalid argument, weeksInTheFuture', function() {
+		it('should return an error', function() {
+			expect(subject.getWeeksInTheFuture.bind('randomString')).to.throw('getWeeksInTheFuture(): argument must be a number');
+		});
+	});
 
 
+	// PASSED
+	context('with a valid number, weeksInThePast', function() {
+		it('should return a string', function() {
+			expect(subject.getweeksInThePast(7)).to.be.valid;
+		});
+	});
+
+	// PASSED
+	context('with an invalid argument, weeksInThePast', function() {
+		it('should return an error', function() {
+			expect(subject.getweeksInThePast.bind('randomString')).to.throw('getweeksInThePast(): argument must be a number');
+		});
+	});
+
+	// PASSED
+	context('With a valid argument, getMonthsInTheFuture', function() {
+		it('should return a string', function() {
+			expect(subject.getMonthsInTheFuture(7)).to.be.valid;
+		});
+	});
+
+	// PASSED
+	context('With a NaN argument, getMonthsInTheFuture', function() {
+		it('should throw an error', function() {
+			expect(subject.getMonthsInTheFuture.bind('string')).to.throw('getMonthsInTheFuture(): argument must be a number');
+		});
+	});
 });
 
 

@@ -2,23 +2,21 @@
 var _ = require('lodash');
 var rp = require('request-promise');
 let moment = require('moment');
-// moment().format(); // not sure if this is needed
+moment().format(); // not sure if this is needed
 
 /*
 TODO: refactor to accept strings.
 DONE: created validation function for strings passed in.
 
 All dates from Amazon Alexa get passed in as strings in format YYYY-MM-DD
-
-
 */
 
 // Date constants
 // Might use to handle returns further down the line
-var minutes = 1000 * 60;
-var hours 	= minutes * 60;
-var days 	= hours * 24;
-var weeks 	= days * 7;
+// var minutes = 1000 * 60;
+// var hours 	= minutes * 60;
+// var days 	= hours * 24;
+// var weeks 	= days * 7;
 
 function DateHelper() {
 
@@ -31,7 +29,7 @@ function DateHelper() {
 	'How many days ago was <inputDate>?' (returns negative number)
 	*/
 
-	// REFACTORED
+	// Takes AMAZON.DATE string as its argument
 	DateHelper.prototype.getDaysFromNow = function(inputDate) {
 
 		if (isValidDate(inputDate)) { 		// validate it
@@ -42,7 +40,7 @@ function DateHelper() {
 
 			// Calculate daysFromNow here
 			var daysFromNow = inputDate.diff(currentDate, 'days');
-			console.log('daysFromNow = ' + daysFromNow);
+			console.log("\t" + 'daysFromNow = ' + daysFromNow);
 
 			return daysFromNow;
 		} else {
@@ -57,11 +55,25 @@ function DateHelper() {
 	'What's the difference in days between <date1> and <date2>?'
 	*/
 
+	// Takes AMAZON.DATE strings as its arguments
 	DateHelper.prototype.getDaysBetweenDates = function(date1, date2) {
 
-		var daysBetweenDates = date1.diff(date2, 'days');
-		console.log('daysBetweenDates = ' + Math.abs(daysBetweenDates));
-		return Math.abs(daysBetweenDates); // Returns an absolute number
+		// validate arguments
+		if (isValidDate(date1) && isValidDate(date2)) {
+			// convert arguments to moments
+			date1 = moment(date1, "YYYY-MM-DD").startOf('day');
+			date2 = moment(date2, "YYYY-MM-DD").startOf('day');
+
+			// calculate difference between dates in days
+			var daysBetweenDates = date1.diff(date2, 'days');
+			console.log("\t" + 'daysBetweenDates = ' + Math.abs(daysBetweenDates));
+
+			// return absolute value
+			return Math.abs(daysBetweenDates); // Returns an absolute number
+		} else {
+			// throw an error
+			throw new Error("getDaysBetweenDates(): both arguments must be valid AMAZON.DATE strings");
+		}
 	};
 
 
@@ -71,11 +83,19 @@ function DateHelper() {
 	'What day of the week is <inputDate>?'
 	'What day of the week will <inputDate> be?'
 	*/
+
+	// Takes AMAZON.DATE string as its argument
 	DateHelper.prototype.getDayOfTheWeekFromDate = function(inputDate) {
 
-		if (inputDate instanceof Date) {
-			inputDate = new Date();
-			var dayOfTheWeek = inputDate.getDay();
+		if (isValidDate(inputDate)) {
+			inputDate = new Date(inputDate);
+			console.log("\tinputDate = " + inputDate);
+
+			// TODO: read docs re: how this returns the right date.
+			// http://stackoverflow.com/a/24177229/4475605
+			var dayOfTheWeek = inputDate.getUTCDay();
+
+			console.log("\tThe day of the week (number) is " + dayOfTheWeek);
 
 			switch(dayOfTheWeek) {
 				case 0: return "Sunday";
@@ -85,14 +105,11 @@ function DateHelper() {
 				case 4: return "Thursday";
 				case 5: return "Friday";
 				case 6: return "Saturday";
-				default: return;
+				default: return; // leaving in as insurance policy
 			}
 		} else {
-			// I'm shooting for doing nothing if the input isn't a Date()
-			// How would I test this?
-			return;
+			throw new Error("getDayOfTheWeekFromDate(): argument was not a valid AMAZON.DATE string");
 		}
-
 	};
 
 	/*
@@ -101,13 +118,12 @@ function DateHelper() {
 	'What's <daysInTheFuture> days from now?'
 	*/
 
-	// FIXME: need to refactor error handling
-
+	// Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getDaysInTheFuture = function(daysInTheFuture) {
 		if (isNaN(daysInTheFuture)) {
 			throw new Error("getDaysInTheFuture(): argument must be a number");
 		} else {
-			console.log('getDaysInTheFuture ' + moment().add(daysInTheFuture, 'days').calendar());
+			console.log('\tgetDaysInTheFuture ' + moment().add(daysInTheFuture, 'days').calendar());
 			return moment().add(daysInTheFuture, 'days').calendar();
 		}
 	};
@@ -117,40 +133,70 @@ function DateHelper() {
 	What was the date <daysInThePast> days ago?
 	*/
 
+	// Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getDaysInThePast = function(daysInThePast) {
 		// refactored w/ better error handling
 		if (isNaN(daysInThePast)) {
 			throw new Error("getDaysInThePast(): argument must be a number");
 		} else {
-			console.log('getDaysInThePast ' + moment().subtract(daysInThePast, 'days').calendar());
+			console.log('\tgetDaysInThePast ' + moment().subtract(daysInThePast, 'days').calendar());
 			return moment().subtract(daysInThePast, 'days').calendar();
 		}
+	};
 
+	/*
+	Sample utterances:
+	What is the date <weeksInTheFuture> weeks from now?
+	What's the date <weeksInTheFuture> weeks from now?
+	What is the date <weeksInTheFuture> weeks in the future?
+	What's the date <weeksInTheFuture> weeks in the future?
+	*/
 
+	// Takes AMAZON.NUMBER as its argument
+	DateHelper.prototype.getWeeksInTheFuture = function(weeksInTheFuture) {
+		if (isNaN(weeksInTheFuture)) {
+			throw new Error("getWeeksInTheFuture(): argument must be a number");
+		} else {
+			// The original attempt
+			console.log('\tgetWeeksInTheFuture ' + moment().add(weeksInTheFuture, 'weeks').calendar());
+			return moment().add(weeksInTheFuture, 'weeks').calendar();
+		}
+	};
 
+	// Takes AMAZON.NUMBER as its argument
+	DateHelper.prototype.getweeksInThePast = function(weeksInThePast) {
+		if (isNaN(weeksInThePast)) {
+			throw new Error("getweeksInThePast(): argument must be a number");
+		} else {
+			// The original attempt
+			console.log('\tgetweeksInThePast ' + moment().subtract(weeksInThePast, 'weeks').calendar());
+			return moment().subtract(weeksInThePast, 'weeks').calendar();
+		}
 	};
 
 	/*
 	Sample utterances:
 	What is the date <monthsInTheFuture> from now?
 	What is the date <monthsInTheFuture> from today?
-	What is the date <monthsInTheFuture>?
 	*/
+
+	// Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getMonthsInTheFuture = function(monthsInTheFuture) {
-		if (typeof Number(monthsInTheFuture)) {
-			console.log('getMonthsInTheFuture ' + moment().add(monthsInTheFuture, 'months').calendar());
-			return moment().add(monthsInTheFuture, 'months').calendar();
+		if (isNaN(monthsInTheFuture)) {
+			throw new Error("getMonthsInTheFuture(): argument must be a number");
 		} else {
-			return undefined;			
+			console.log('\tgetMonthsInTheFuture ' + moment().add(monthsInTheFuture, 'months').calendar());
+			return moment().add(monthsInTheFuture, 'months').calendar();
 		}
 	};
+	
+	// 	Sample utterances:
+	// 	What was the date <monthsInThePast> months from today?
+	// 	What was the date <monthsInThePast> months from now?
+	// 	What was the date <monthsInThePast> months ago? 
+	
 
-/*
-	Sample utterances:
-	What was the date <monthsInThePast> months from today?
-	What was the date <monthsInThePast> months from now?
-	What was the date <monthsInThePast> months ago? 
-*/
+	// // Takes AMAZON.NUMBER as its argument
 	DateHelper.prototype.getMonthsInThePast = function(monthsInThePast) {
 		if (typeof Number(monthsInThePast)) {
 			console.log('getMonthsInThePast ' + moment().subtract(monthsInThePast, 'months').calendar());
@@ -159,14 +205,14 @@ function DateHelper() {
 		return;
 	};
 
-// Validation method for dateStrings created by AMAZON.DATE
+// Validation method for dateStrings passed in as AMAZON.DATE
 
 	function isValidDate(dateString) {
 	    // First check for the pattern
 	    var regex_date = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
 
 	    if(!regex_date.test(dateString)) {
-	    	console.log(dateString + " IS NOT a valid date");
+	    	console.log("\t" + dateString + " IS NOT a valid date");
 	        return false;
 	    }
 
@@ -178,7 +224,7 @@ function DateHelper() {
 
 	    // Check the ranges of month and year
 	    if(year < 1000 || year > 3000 || month === 0 || month > 12) {
-	    	console.log(dateString + " IS NOT a valid date");
+	    	console.log("\t" + dateString + " IS NOT a valid date");
 	        return false;
 	    }
 
@@ -189,14 +235,11 @@ function DateHelper() {
 	        monthLength[1] = 29;
 	    }
 
-	    console.log(dateString + " IS a valid date");
+	    console.log("\t" + dateString + " IS a valid date");
 
 	    // Check the range of the day
 	    return day > 0 && day <= monthLength[month - 1];
 	}
-
-
-
 }
 
 module.exports = DateHelper;
