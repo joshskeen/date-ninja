@@ -4,6 +4,15 @@ var rp = require('request-promise');
 let moment = require('moment');
 // moment().format(); // not sure if this is needed
 
+/*
+TODO: refactor to accept strings.
+DONE: created validation function for strings passed in.
+
+All dates from Amazon Alexa get passed in as strings in format YYYY-MM-DD
+
+
+*/
+
 // Date constants
 // Might use to handle returns further down the line
 var minutes = 1000 * 60;
@@ -22,15 +31,24 @@ function DateHelper() {
 	'How many days ago was <inputDate>?' (returns negative number)
 	*/
 
+	// REFACTORED
 	DateHelper.prototype.getDaysFromNow = function(inputDate) {
 
-		var currentDate = moment().format("YYYY MM DD");
-		var daysFromNow = inputDate.diff(currentDate, 'days');
-		console.log('daysFromNow = ' + daysFromNow);
-		// TODO: handle return values w/ logic in response handler
-		// positive number = days until
-		// negative number = days since
-		return daysFromNow;
+		if (isValidDate(inputDate)) { 		// validate it
+			// if it's valid, run the function
+			inputDate = moment(inputDate, "YYYY-MM-DD").startOf('day'); // inputDate starts as a string, recast as a moment here
+			// create currentDate moment from current Date()
+			var currentDate = moment(new Date()).startOf('day');
+
+			// Calculate daysFromNow here
+			var daysFromNow = inputDate.diff(currentDate, 'days');
+			console.log('daysFromNow = ' + daysFromNow);
+
+			return daysFromNow;
+		} else {
+			// throw an error
+			throw new Error("getDaysFromNow(): argument must be valid AMAZON.DATE string");
+		}
 	};
 
 	/*
@@ -83,12 +101,15 @@ function DateHelper() {
 	'What's <daysInTheFuture> days from now?'
 	*/
 
+	// FIXME: need to refactor error handling
+
 	DateHelper.prototype.getDaysInTheFuture = function(daysInTheFuture) {
-		if (typeof Number(daysInTheFuture)) {
+		if (isNaN(daysInTheFuture)) {
+			throw new Error("getDaysInTheFuture(): argument must be a number");
+		} else {
 			console.log('getDaysInTheFuture ' + moment().add(daysInTheFuture, 'days').calendar());
 			return moment().add(daysInTheFuture, 'days').calendar();
 		}
-		return;
 	};
 
 	/*
@@ -97,11 +118,16 @@ function DateHelper() {
 	*/
 
 	DateHelper.prototype.getDaysInThePast = function(daysInThePast) {
-		if (typeof Number(daysInThePast)) {
+		// refactored w/ better error handling
+		if (isNaN(daysInThePast)) {
+			throw new Error("getDaysInThePast(): argument must be a number");
+		} else {
 			console.log('getDaysInThePast ' + moment().subtract(daysInThePast, 'days').calendar());
 			return moment().subtract(daysInThePast, 'days').calendar();
 		}
-		return;
+
+
+
 	};
 
 	/*
@@ -133,7 +159,41 @@ function DateHelper() {
 		return;
 	};
 
+// Validation method for dateStrings created by AMAZON.DATE
 
+	function isValidDate(dateString) {
+	    // First check for the pattern
+	    var regex_date = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
+
+	    if(!regex_date.test(dateString)) {
+	    	console.log(dateString + " IS NOT a valid date");
+	        return false;
+	    }
+
+	    // Parse the date parts to integers
+	    var parts   = dateString.split("-");
+	    var day     = parseInt(parts[2], 10);
+	    var month   = parseInt(parts[1], 10);
+	    var year    = parseInt(parts[0], 10);
+
+	    // Check the ranges of month and year
+	    if(year < 1000 || year > 3000 || month === 0 || month > 12) {
+	    	console.log(dateString + " IS NOT a valid date");
+	        return false;
+	    }
+
+	    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+	    // Adjust for leap years
+	    if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) {
+	        monthLength[1] = 29;
+	    }
+
+	    console.log(dateString + " IS a valid date");
+
+	    // Check the range of the day
+	    return day > 0 && day <= monthLength[month - 1];
+	}
 
 
 
