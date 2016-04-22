@@ -7,6 +7,10 @@ var app = new Alexa.app('date-ninja');
 // var DateHelper = require('./faa_data_helper'); // ORIGINAL
 var DateHelper = require('./date_helper');
 
+var utterancesMethod = app.utterances;
+app.utterances = function() {
+  return utterancesMethod().replace(/\{\-\|/g, '{');
+};
 
 app.launch(function(req, res) {
 	var prompt = 'I can help you with day, week, and month calculations. Ask me a question.';
@@ -46,10 +50,4 @@ app.intent('getDaysFromNow', {
     }
   }
 );
-//hack to support custom utterances in utterance expansion string
-console.log(app.utterances().replace(/\{\-\|/g, '{'));
-
-
-
-
 module.exports = app;
