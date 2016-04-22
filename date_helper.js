@@ -213,6 +213,7 @@ DateHelper.prototype.getMonthsInThePast = function(monthsInThePast) {
 DateHelper.prototype.formatDaysFromNowResponse = function(daysFromNow) {
 	console.log("formatDaysFromNowResponse fired. the daysFromNow value was : " + daysFromNow);
 	// TODO: finish this stub
+  return daysFromNow.toString();
 };
 
 
