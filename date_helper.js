@@ -210,8 +210,8 @@ DateHelper.prototype.getMonthsInThePast = function(monthsInThePast) {
 };
 
 // Response formatters for index.js
-DateHelper.prototype.formatDaysFromNowResponse = function() {
-	console.log("formatDaysFromNowResponse fired.");
+DateHelper.prototype.formatDaysFromNowResponse = function(daysFromNow) {
+	console.log("formatDaysFromNowResponse fired. the daysFromNow value was : " + daysFromNow);
 	// TODO: finish this stub
 };
 
